@@ -1,7 +1,7 @@
 # Copyright (c) 2009-2011, Dan Bravender <dan.bravender@gmail.com>
 
 import random
-import os
+import os, sys
 import functools
 
 def integers(low=0, high=100):
@@ -90,7 +90,13 @@ def forall(tries=100, **kwargs):
                     from pprint import pprint
                     pprint(random_kwargs)
                 random_kwargs.update(**inkwargs)
-                f(*inargs, **random_kwargs)
+                try:
+                    f(*inargs, **random_kwargs)
+                except Exception, e:
+                    if sys.version_info[0] < 3:
+                        raise e.__class__("%s, caused a failure\n %s" % (random_kwargs, e)), None, sys.exc_traceback
+                    else:
+                        raise e.__class__("{} caused a failure\n".format(random_kwargs)).with_traceback(e.__traceback__)
         return wrapped
     return wrap
 forall.verbose = False # if enabled will print out the random test cases
