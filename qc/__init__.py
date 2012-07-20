@@ -79,7 +79,32 @@ def objects(_object_class, _fields={}, *init_args, **init_kwargs):
             setattr(obj, k, v.next())
         yield obj
 
-def forall(tries=100, seed=None, **kwargs):
+def shrink(something):
+    if isinstance(something, list):
+        l = len(something)/2
+        yield something[:l]
+        yield something[l:]
+    else:
+        yield []
+
+def call_and_shrink(f, tryshrink, seed, *inargs, **random_kwargs):
+    try:
+        f(*inargs, **random_kwargs)
+    except Exception, e:
+        if tryshrink:
+            for k in random_kwargs:
+                for s in shrink(random_kwargs[k]):
+                    shrinked_kwargs = random_kwargs.copy()
+                    shrinked_kwargs[k] = s
+                    call_and_shrink(f, tryshrink, seed, *inargs, **shrinked_kwargs)
+        if sys.version_info[0] < 3:
+            raise e.__class__("%s, generated with seed %s, caused a FAIL\n%s" %
+                                  (random_kwargs, seed, e)), None, sys.exc_traceback
+        else:
+            raise e.__class__("{0}, generated with seed {1}, caused a FAIL\n".format(
+                                   random_kwargs, seed)).with_traceback(e.__traceback__)
+
+def forall(tries=100, shrink=True, seed=None, **kwargs):
     if seed is None:
         try:
             seed = hash(os.urandom(16))
@@ -96,15 +121,7 @@ def forall(tries=100, seed=None, **kwargs):
                     from pprint import pprint
                     pprint(random_kwargs)
                 random_kwargs.update(**inkwargs)
-                try:
-                    f(*inargs, **random_kwargs)
-                except Exception, e:
-                    if sys.version_info[0] < 3:
-                        raise e.__class__("%s, generated with seed %s, caused a FAIL\n%s" % 
-                                                (random_kwargs, seed, e)), None, sys.exc_traceback
-                    else:
-                        raise e.__class__("{0}, generated with seed {1}, caused a FAIL\n".format(
-                                                 random_kwargs, seed)).with_traceback(e.__traceback__)
+                call_and_shrink(f, shrink, seed, *inargs, **random_kwargs)
         return wrapped
     return wrap
 forall.verbose = False # if enabled will print out the random test cases
