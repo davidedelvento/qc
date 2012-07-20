@@ -79,7 +79,13 @@ def objects(_object_class, _fields={}, *init_args, **init_kwargs):
             setattr(obj, k, v.next())
         yield obj
 
-def forall(tries=100, **kwargs):
+def forall(tries=100, seed=None, **kwargs):
+    if seed is None:
+        try:
+            seed = hash(os.urandom(16))
+        except NotImplementedError, e:
+            seed = random.random()
+    random.seed(seed)
     def wrap(f):
         @functools.wraps(f)
         def wrapped(*inargs, **inkwargs):
@@ -94,9 +100,11 @@ def forall(tries=100, **kwargs):
                     f(*inargs, **random_kwargs)
                 except Exception, e:
                     if sys.version_info[0] < 3:
-                        raise e.__class__("%s, caused a failure\n %s" % (random_kwargs, e)), None, sys.exc_traceback
+                        raise e.__class__("%s, generated with seed %s, caused a FAIL\n%s" % 
+                                                (random_kwargs, seed, e)), None, sys.exc_traceback
                     else:
-                        raise e.__class__("{} caused a failure\n".format(random_kwargs)).with_traceback(e.__traceback__)
+                        raise e.__class__("{0}, generated with seed {1}, caused a FAIL\n".format(
+                                                 random_kwargs, seed)).with_traceback(e.__traceback__)
         return wrapped
     return wrap
 forall.verbose = False # if enabled will print out the random test cases
