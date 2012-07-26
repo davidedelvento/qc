@@ -90,7 +90,7 @@ def shrink(something):
 def call_and_shrink(f, tryshrink, seed, *inargs, **random_kwargs):
     try:
         f(*inargs, **random_kwargs)
-    except Exception, e:
+    except AssertionError, e:     # shrink only when there is AssertionErrors, in other cases is ad infinitum recursion
         if tryshrink:
             for k in random_kwargs:
                 for s in shrink(random_kwargs[k]):
