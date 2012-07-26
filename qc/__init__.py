@@ -122,8 +122,12 @@ def forall(tries=100, shrink=True, seed=None, **kwargs):
                     pprint(random_kwargs)
                 random_kwargs.update(**inkwargs)
                 call_and_shrink(f, shrink, seed, *inargs, **random_kwargs)
+            if forall.printsummary:
+                from pprint import pprint
+                pprint(f.__name__+": passed "+str(tries)+" tests [OK]")
         return wrapped
     return wrap
+forall.printsummary = False
 forall.verbose = False # if enabled will print out the random test cases
 
 __all__ = ['integers', 'floats', 'lists', 'tuples', 'unicodes', 'characters', 'objects', 'forall']
