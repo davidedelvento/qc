@@ -1,4 +1,4 @@
-from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall
+from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, shrink
 
 @forall(tries=10, i=integers())
 def test_integers(i):
@@ -92,6 +92,28 @@ def test_dicts_size(d):
     for x, y in d.iteritems():
         assert type(x) == unicode
         assert type(y) == list
+
+@forall(full_l=lists())
+def test_shrink_lists(full_l):
+    for sub_l in shrink(full_l):
+        assert len(sub_l) <= len(full_l)/2 + 1
+
+@forall(full_i=integers(low=-100))
+def test_shrink_integers(full_i):
+    for i in shrink(full_i):
+        assert abs(i) <= abs(full_i)/2 + 1
+        assert cmp(i,0) == cmp(full_i, 0)   # shrink shall not change sign
+        assert isinstance(i, int)
+
+@forall(full_f=floats(low=-5.0, high=5.0))
+def test_shrink_floats(full_f):
+    for f in shrink(full_f):
+        if abs(full_f) > 1:
+            assert abs(f) <= abs(full_f)/2 + 1
+        else:
+            assert abs(f) >= abs(full_f)/2 + 1
+        assert cmp(f,0) == cmp(full_f, 0)   # shrink shall not change sign
+        assert isinstance(f, float)
 
 @forall(tries=10, i=integers(low=0, high=10))
 def each_integer_from_0_to_10(i, target_low, target_high):

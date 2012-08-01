@@ -80,12 +80,17 @@ def objects(_object_class, _fields={}, *init_args, **init_kwargs):
         yield obj
 
 def shrink(something):
-    if isinstance(something, list):
+    try:
         l = len(something)/2
         yield something[:l]
         yield something[l:]
-    else:
-        yield []
+    except TypeError:
+        pass
+    try:
+        if abs(something) >= 2:
+            yield something/2
+    except TypeError:
+        pass
 
 def call_and_shrink(f, tryshrink, seed, *inargs, **random_kwargs):
     try:
