@@ -53,10 +53,13 @@ a subdirectory of the tree where you are running.
  Examples
 ============
 
-example1_unittest.py provides a simple example (borrowed from scalacheck)
-                     on how to use this framework with python native
-                     PyUnit framework (aka unittest module).
-                     Just run it with "python example1_unittest.py"
+examples/example1_unittest.py and examples/example1_nose.py
+
+    These examples provide a simple example (borrowed from scalacheck)
+    on how to use this framework with python native PyUnit framework
+    (aka unittest module) and with the popular nose framework.
+     Just run "python examples/example1_unittest.py"
+     or "nosetests examples/example1_nose.py'
 
 ============
    TODO
