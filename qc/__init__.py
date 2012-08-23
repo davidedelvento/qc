@@ -81,6 +81,8 @@ def objects(_object_class, _fields={}, *init_args, **init_kwargs):
 
 def shrink(something):
     try:
+        if len(something) == 0:    # never shrink a zero-len object, since it
+            return                 # will lead to infinite recursion
         l = len(something)/2
         yield something[:l]
         yield something[l:]

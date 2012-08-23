@@ -93,6 +93,12 @@ def test_dicts_size(d):
         assert type(x) == unicode
         assert type(y) == list
 
+def test_shrink_empty_list():
+    empty_list_has_been_shrunk = False
+    for x in shrink([]):
+        empty_list_has_been_shrunk = True
+    assert empty_list_has_been_shrunk == False, "Empty lists must not be shrunk"
+
 @forall(full_l=lists())
 def test_shrink_lists(full_l):
     for sub_l in shrink(full_l):
