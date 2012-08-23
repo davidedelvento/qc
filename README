@@ -1,6 +1,77 @@
 ============
+Introduction
+============
+This framework does Random and Combinatorial Testing. Before you leave
+horrified, please have a look at the following videos from professor
+John Regehr, University of Utah (less than 15min total):
+http://www.youtube.com/watch?v=cwhC19Fa_84  - introduction to random testing
+http://www.youtube.com/watch?v=PrJZ6144eeM  - why random testing is good (1)
+http://www.youtube.com/watch?v=btlfWwyzSXQ  - why random testing is good (2)
+http://www.youtube.com/watch?v=iw6BtJxPT8A  - why random testing is good (3)
+http://www.youtube.com/watch?v=QrLtkSdMDgw  - why random testing is good (4)
+
+Random testing, is not just randomly feeding your software a random
+stream of bytes. It requires more thoughts. The Udacity course on
+testing (http://www.udacity.com/overview/Course/cs258/CourseRev/1) has
+units 3 and 4 entirely dedicated to Random Testing, describing many
+things you need to know about Random Testing: how to create valid,
+good, random test cases (3.25-26 and 4.5-15), mutators (3.29), oracles
+(3.30-34), test case reduction (4.5-6), tradeoffs (4.18-20), and more.
+Random Testing is also mentioned elsewhere in the class (and expected
+to be know in the final exam). Very worth watching (the introductory
+videos linked above are from this class)
+
+Ok, so you're convinced that Random Testing may be worth exploring.
+Why this framework? It is a python framework inspired by Haskell's
+http://en.wikipedia.org/wiki/QuickCheck
+
+It does many things for you, including automatic test case reduction
+(currently only with bisection techniques, and thus in logarithmic time).
+
+============
 Installation
 ============
 
+The easy, system-wide way (requires administrative privileges):
+
 sudo easy_install pip
+sudo pip install -e git://github.com/davidedelvento/qc.git#egg=qc
+(I hope to get it merged upstream, so you will install with
 sudo pip install -e git://github.com/dbravender/qc.git#egg=qc
+instead)
+
+If you don't want to pollute the whole system with this library,
+or would like to test it before committing, or simply don't have
+root access on your machine, just copy the qc directory and its
+content (a mere __init__.py file) into the location of your choice.
+To have qc available to your programs you will have to set the
+PYTHONPATH environmental variable or have the qc directory as
+a subdirectory of the tree where you are running.
+
+============
+ Examples
+============
+
+TBD
+
+============
+   TODO
+============
+
+* provide the option to not stop in case of failures, and instead
+logging and continue (or better handled by the underlying test
+framework?? see http://stackoverflow.com/questions/4732827/ for a
+discussion)
+
+* improve the current test case reduction from bisection only to
+delta-debugging (see http://www.st.cs.uni-saarland.de/dd/
+http://delta.tigris.org/
+http://classes.soe.ucsc.edu/cmps290g/Winter04/lectures/flanagan-290g-8.pdf
+for details)
+
+* integration with git-bisect (maybe)
+
+* better edge cases coverage: e.g. for integers use a range of
+[-sys.maxint-1, sys.maxint] instead of [0, 100] or at the very
+least some negative cases... Note that the range needs to be different
+for long integers.
