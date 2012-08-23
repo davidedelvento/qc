@@ -27,7 +27,9 @@ http://hackage.haskell.org/package/QuickCheck and Scala's
 https://github.com/rickynils/scalacheck
 
 It does many things for you, including automatic test case reduction
-(currently only with bisection techniques, and thus in logarithmic time).
+(currently only with bisection techniques, and thus it reduce the test case
+in logarithmic time, which means it is very fast althugh it may reduce to
+a case potentially larger than the absolute smallest one)
 
 ============
 Installation
