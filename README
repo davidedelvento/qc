@@ -23,7 +23,8 @@ videos linked above are from this class)
 
 Ok, so you're convinced that Random Testing may be worth exploring.
 Why this framework? It is a python framework inspired by Haskell's
-http://en.wikipedia.org/wiki/QuickCheck
+http://hackage.haskell.org/package/QuickCheck and Scala's
+https://github.com/rickynils/scalacheck
 
 It does many things for you, including automatic test case reduction
 (currently only with bisection techniques, and thus in logarithmic time).
@@ -52,7 +53,10 @@ a subdirectory of the tree where you are running.
  Examples
 ============
 
-TBD
+example1_unittest.py provides a simple example (borrowed from scalacheck)
+                     on how to use this framework with python native
+                     PyUnit framework (aka unittest module).
+                     Just run it with "python example1_unittest.py"
 
 ============
    TODO
