@@ -28,7 +28,7 @@ https://github.com/rickynils/scalacheck
 
 It does many things for you, including automatic test case reduction
 (currently only with bisection techniques, and thus it reduce the test case
-in logarithmic time, which means it is very fast althugh it may reduce to
+in logarithmic time, which means it is very fast although it may reduce to
 a case potentially larger than the absolute smallest one)
 
 ============
@@ -62,6 +62,10 @@ examples/example1_unittest.py and examples/example1_nose.py
     (aka unittest module) and with the popular nose framework.
      Just run "python examples/example1_unittest.py"
      or "nosetests examples/example1_nose.py'
+
+examples/ex3_airplane.py
+    Simple example on how to have qc generate your own custom (random)
+    objects and how to use them in practice
 
 ============
    TODO
