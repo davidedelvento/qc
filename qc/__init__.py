@@ -79,7 +79,7 @@ def objects(_object_class, _fields={}, *init_args, **init_kwargs):
             setattr(obj, k, v.next())
         yield obj
 
-def shrink(something):
+def qc_shrink(something):
     try:
         if len(something) == 0:    # never shrink a zero-len object, since it
             return                 # will lead to infinite recursion
@@ -98,16 +98,16 @@ def shrink(something):
     except TypeError:
         pass
 
-def call_and_shrink(f, tryshrink, seed, *inargs, **random_kwargs):
+def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs):
     try:
         f(*inargs, **random_kwargs)
     except AssertionError, e:     # shrink only when there is AssertionErrors, in other cases is ad infinitum recursion
         if tryshrink:
             for k in random_kwargs:
-                for s in shrink(random_kwargs[k]):
+                for s in custom_shrink(random_kwargs[k]):
                     shrinked_kwargs = random_kwargs.copy()
                     shrinked_kwargs[k] = s
-                    call_and_shrink(f, tryshrink, seed, *inargs, **shrinked_kwargs)
+                    call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **shrinked_kwargs)
         if sys.version_info[0] < 3:
             raise e.__class__("%s, generated with seed %s, caused a FAIL\n%s" %
                                   (random_kwargs, seed, e)), None, sys.exc_traceback
@@ -115,7 +115,7 @@ def call_and_shrink(f, tryshrink, seed, *inargs, **random_kwargs):
             raise e.__class__("{0}, generated with seed {1}, caused a FAIL\n".format(
                                    random_kwargs, seed)).with_traceback(e.__traceback__)
 
-def forall(tries=100, shrink=True, seed=None, **kwargs):
+def forall(tries=100, shrink=True, seed=None, custom_shrink=qc_shrink, **kwargs):
     if seed is None:
         try:
             seed = hash(os.urandom(16))
@@ -132,7 +132,7 @@ def forall(tries=100, shrink=True, seed=None, **kwargs):
                     from pprint import pprint
                     pprint(random_kwargs)
                 random_kwargs.update(**inkwargs)
-                call_and_shrink(f, shrink, seed, *inargs, **random_kwargs)
+                call_and_shrink(f, shrink, seed, custom_shrink, *inargs, **random_kwargs)
             if forall.printsummary:
                 from pprint import pprint
                 pprint(f.__name__+": passed "+str(tries)+" tests [OK]")

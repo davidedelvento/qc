@@ -1,4 +1,4 @@
-from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, shrink
+from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, qc_shrink, call_and_shrink
 
 @forall(tries=10, i=integers())
 def test_integers(i):
@@ -95,33 +95,33 @@ def test_dicts_size(d):
 
 def test_shrink_empty_list():
     empty_list_has_been_shrunk = False
-    for x in shrink([]):
+    for x in qc_shrink([]):
         empty_list_has_been_shrunk = True
     assert empty_list_has_been_shrunk == False, "Empty lists must not be shrunk"
 
 def test_shrink_single_element_list():
     repeated = False
     l = [0]
-    for x in shrink(l):
+    for x in qc_shrink(l):
         if x == l:
             repeated = True
     assert repeated == False, "Shrink must not repeat things already seen"
 
 @forall(full_l=lists())
 def test_shrink_lists(full_l):
-    for sub_l in shrink(full_l):
+    for sub_l in qc_shrink(full_l):
         assert len(sub_l) <= len(full_l)/2 + 1
 
 @forall(full_i=integers(low=-100))
 def test_shrink_integers(full_i):
-    for i in shrink(full_i):
+    for i in qc_shrink(full_i):
         assert abs(i) <= abs(full_i)/2 + 1
         assert cmp(i,0) == cmp(full_i, 0)   # shrink shall not change sign
         assert isinstance(i, int)
 
 @forall(full_f=floats(low=-5.0, high=5.0))
 def test_shrink_floats(full_f):
-    for f in shrink(full_f):
+    for f in qc_shrink(full_f):
         if abs(full_f) > 1:
             assert abs(f) <= abs(full_f)/2 + 1
         else:
