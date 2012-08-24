@@ -67,6 +67,9 @@ examples/ex3_airplane.py
     Simple example on how to have qc generate your own custom (random)
     objects and how to use them in practice
 
+examples/ex4_bookcase.py
+    A more elaborate example, for now only drafted
+
 ============
    TODO
 ============
