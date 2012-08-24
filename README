@@ -68,7 +68,10 @@ examples/ex3_airplane.py
     objects and how to use them in practice
 
 examples/ex4_bookcase.py
-    A more elaborate example, for now only drafted
+    A more elaborate example, showing the power of automatic shrinking
+    and showing how to write your own shrinker. In this example you can
+    see how qc automagically finds the root cause of the bug, compare 
+    the output with or without shrinking!
 
 ============
    TODO
