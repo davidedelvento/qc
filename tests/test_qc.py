@@ -99,6 +99,14 @@ def test_shrink_empty_list():
         empty_list_has_been_shrunk = True
     assert empty_list_has_been_shrunk == False, "Empty lists must not be shrunk"
 
+def test_shrink_single_element_list():
+    repeated = False
+    l = [0]
+    for x in shrink(l):
+        if x == l:
+            repeated = True
+    assert repeated == False, "Shrink must not repeat things already seen"
+
 @forall(full_l=lists())
 def test_shrink_lists(full_l):
     for sub_l in shrink(full_l):

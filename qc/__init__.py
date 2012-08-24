@@ -83,6 +83,10 @@ def shrink(something):
     try:
         if len(something) == 0:    # never shrink a zero-len object, since it
             return                 # will lead to infinite recursion
+        if len(something) == 1:    # if single-object collection
+            yield something[:0]    # try the empty collection
+            return                 # if it works, no need to try the single-object
+                                   # collection again
         l = len(something)/2
         yield something[:l]
         yield something[l:]
