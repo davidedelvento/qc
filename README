@@ -55,7 +55,8 @@ a subdirectory of the tree where you are running.
  Examples
 ============
 
-examples/example1_unittest.py and examples/example1_nose.py
+examples/ex1_unittest.py and 
+examples/ex1_nose.py
 
     These examples provide a simple example (borrowed from scalacheck)
     on how to use this framework with python native PyUnit framework
@@ -76,6 +77,10 @@ examples/ex4_bookcase.py
 ============
    TODO
 ============
+
+* print a better summary, e.g. including the total number of tries
+per method and other infos  (need to investigate how to do it cleanly
+and in a way that works both in unittest and nose)
 
 * provide the option to not stop in case of failures, and instead
 logging and continue (or better handled by the underlying test
