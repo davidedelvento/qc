@@ -75,6 +75,28 @@ examples/ex4_bookcase.py
     the output with or without shrinking!
 
 ============
+ Known bugs
+============
+
+At present there is not any known bug. If you discover one, please let
+us know. One common problem when using automatic shrinking is running
+out of stack space in the recursion process (the shrink algorithm
+call itself several times to produce a smaller test case). This may
+happen either if there is a bug in qc itself, or if there is a problem
+in your test code. You will see an error like:
+
+RuntimeError: maximum recursion depth exceeded while calling a Python object
+
+with a stack trace that shows the recursion tree of the shrinking
+method calling itself. To understand what is happening, it is usually
+useful to add the shrink=False option to the @forall decorator of the
+affected test method. In very rare cases it may be necessary to increase
+the stack depth with a call to sys.setrecursionlimit(NEWDEPTH), but
+do not do it until you understand that it is really the case for your
+test. More often than not, there will be a bug in your code or in qc.
+Please report the latter.
+
+============
    TODO
 ============
 
