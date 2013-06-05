@@ -62,7 +62,8 @@ examples/ex1_nose.py
     on how to use this framework with python native PyUnit framework
     (aka unittest module) and with the popular nose framework.
      Just run "python examples/example1_unittest.py"
-     or "nosetests examples/example1_nose.py'
+     or "nosetests examples/example1_nose.py". Pytest can also run
+     the nose tests using "py.test examples/example1_nose.py".
 
 examples/ex3_airplane.py
     Simple example on how to have qc generate your own custom (random)
