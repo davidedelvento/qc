@@ -1,6 +1,12 @@
-==============
- Introduction
-==============
+============
+ QuickCheck
+============
+
+.. image:: https://travis-ci.org/davidedelvento/qc.png
+   :target: https://travis-ci.org/davidedelvento/qc
+
+Introduction
+============
 
 This framework does Random and Combinatorial Testing. Before you leave
 horrified, please have a look at the following videos from Professor
@@ -36,9 +42,9 @@ a case potentially larger than the absolute smallest one).
 .. _QuickCheck: http://hackage.haskell.org/package/QuickCheck
 .. _scalacheck: https://github.com/rickynils/scalacheck
 
-==============
- Installation
-==============
+
+Installation
+============
 
 The easy, system-wide way (requires administrative privileges)::
 
@@ -55,9 +61,9 @@ have qc available to your programs you will have to set the
 ``PYTHONPATH`` environmental variable or have the ``qc`` directory as
 a subdirectory of the tree where you are running.
 
-==========
- Examples
-==========
+
+Examples
+========
 
 ``examples/ex1_unittest.py`` and ``examples/ex1_nose.py``
     These examples provide a simple example (borrowed from scalacheck)
@@ -77,9 +83,9 @@ a subdirectory of the tree where you are running.
     see how qc automagically finds the root cause of the bug, compare
     the output with or without shrinking!
 
-============
- Known bugs
-============
+
+Known bugs
+==========
 
 At present there are no known bugs. If you discover one, please let us
 know. One common problem when using automatic shrinking is running out
@@ -100,9 +106,9 @@ understand that it is really the case for your test. More often than
 not, there will be a bug in your code or in qc.  Please report the
 latter.
 
-======
- TODO
-======
+
+TODO
+====
 
 * Print a better summary, e.g. including the total number of tries per
   method and other infos (need to investigate how to do it cleanly and
