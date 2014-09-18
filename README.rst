@@ -50,16 +50,16 @@ The easy, system-wide way (requires administrative privileges)::
 
     sudo pip install -e git://github.com/davidedelvento/qc.git#egg=qc
 
-(I hope to get it merged upstream, so you will install with ``sudo pip
-install -e git://github.com/dbravender/qc.git#egg=qc`` instead).
-
-If you don't want to pollute the whole system with this library, or
-would like to test it before committing, or simply don't have root
-access on your machine, just copy the ``qc`` directory and its content
-(a mere ``__init__.py`` file) into the location of your choice.  To
-have qc available to your programs you will have to set the
+If you don't feel ready to commit for a whole system install of this library, or
+simply don't have root access on your machine, just copy the ``qc`` directory 
+and its content (as seen in https://github.com/davidedelvento/qc/tree/master/qc
+at the moment the content is a mere ``__init__.py`` file) into the location of your choice.  
+To make `qc` available to your programs you will have to set the
 ``PYTHONPATH`` environmental variable or have the ``qc`` directory as
-a subdirectory of the tree where you are running.
+a subdirectory of the tree where you are running (for details, see 
+https://docs.python.org/2/tutorial/modules.html#the-module-search-path if you
+use python 2 or https://docs.python.org/3/tutorial/modules.html#the-module-search-path
+if you use python 3)
 
 
 Examples
@@ -103,8 +103,9 @@ of the affected test method. In very rare cases it may be necessary to
 increase the stack depth with a call to
 ``sys.setrecursionlimit(NEWDEPTH)``, but do not do it until you
 understand that it is really the case for your test. More often than
-not, there will be a bug in your code or in qc.  Please report the
-latter.
+not, there will be a bug in your code (especially likely if you are
+writing your first shrinker) or in qc.  Please report the
+latter to https://github.com/davidedelvento/qc/issues
 
 
 TODO
@@ -128,8 +129,3 @@ TODO
     * http://classes.soe.ucsc.edu/cmps290g/Winter04/lectures/flanagan-290g-8.pdf
 
 * Integration with ``git-bisect`` (maybe).
-
-* Better edge cases coverage: e.g. for integers use a range of
-  ``[-sys.maxint-1, sys.maxint]`` instead of ``[0, 100]`` or at the
-  very least some negative cases... Note that the range needs to be
-  different for long integers.

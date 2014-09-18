@@ -1,4 +1,5 @@
 # Copyright (c) 2009-2011, Dan Bravender <dan.bravender@gmail.com>
+# Copyright (c) 2012-2014, Davide Del Vento <davide.del.vento @ gmail>
 
 import random
 import os, sys
