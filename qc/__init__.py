@@ -99,6 +99,14 @@ def qc_shrink(something):
     except TypeError:
         pass
 
+class QCAssertionError(AssertionError):
+    def __init__(self, error, *args, **kwargs):
+        super(QCAssertionError, self).__init__(*args, **kwargs)
+        self.parent_error=error
+
+    def __str__(self):
+        return self.message + str(self.parent_error)
+
 def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs):
     try:
         f(*inargs, **random_kwargs)
@@ -110,10 +118,10 @@ def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs)
                     shrinked_kwargs[k] = s
                     call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **shrinked_kwargs)
         if sys.version_info[0] < 3:
-            raise e.__class__("%s, generated with seed %s, caused a FAIL\n%s" %
-                                  (random_kwargs, seed, e)), None, sys.exc_traceback
+            raise QCAssertionError(e, str(random_kwargs) + 
+                                      " (from seed " +str(seed) +  ") caused a FAIL: "), None, sys.exc_traceback
         else:
-            raise e.__class__("{0}, generated with seed {1}, caused a FAIL\n".format(
+            raise QCAssertionError(e, "{0}, from seed {1}, caused a FAILURE\n".format(
                                    random_kwargs, seed)).with_traceback(e.__traceback__)
 
 def forall(tries=100, shrink=True, seed=None, custom_shrink=qc_shrink, **kwargs):
