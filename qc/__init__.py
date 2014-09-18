@@ -110,7 +110,7 @@ class QCAssertionError(AssertionError):
 def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs):
     try:
         f(*inargs, **random_kwargs)
-    except AssertionError, e:     # shrink only when there is AssertionErrors, in other cases is ad infinitum recursion
+    except AssertionError as e:     # shrink only when there is AssertionErrors, in other cases is ad infinitum recursion
         if tryshrink:
             for k in random_kwargs:
                 for s in custom_shrink(random_kwargs[k]):
@@ -128,7 +128,7 @@ def forall(tries=100, shrink=True, seed=None, custom_shrink=qc_shrink, **kwargs)
     if seed is None:
         try:
             seed = hash(os.urandom(16))
-        except NotImplementedError, e:
+        except NotImplementedError:
             seed = random.random()
     random.seed(seed)
     def wrap(f):
