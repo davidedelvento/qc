@@ -87,8 +87,10 @@ Examples
 Known bugs
 ==========
 
-At present there are no known bugs. If you discover one, please let us
-know. One common problem when using automatic shrinking is running out
+See https://github.com/davidedelvento/qc/issues for a list of known
+issues. The Python 3 support seems to be broken at the moment.
+
+One common problem when using automatic shrinking is running out
 of stack space in the recursion process (the shrink algorithm call
 itself several times to produce a smaller test case). This may happen
 either if there is a bug in qc itself, or if there is a problem in
