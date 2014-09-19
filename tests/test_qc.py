@@ -1,5 +1,6 @@
 from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, qc_shrink, call_and_shrink
 import math
+from nose.tools import raises
 
 # Integers
 
@@ -71,6 +72,27 @@ def test_lists_size(l):
 @forall(tries=10, t=tuples(items=integers(), size=(10, 50)))
 def test_tuples_size(t):
     assert 10 <= len(t) <= 50, "tuple of unexpected size: " + str(len(t))
+
+@raises(AssertionError)
+@forall(tries=10, t=tuples(size=(-10, 10)))
+def test_negative_tuples_size(t):
+    pass # must raise an exception for negative sizes
+
+@raises(AssertionError)
+@forall(tries=10, t=lists(size=(-10, 10)))
+def test_negative_lists_size(t):
+    pass # must raise an exception for negative sizes
+
+@raises(Exception)
+@forall(tries=10, t=tuples(size=(20, 10)))
+def test_wrong_tuples_size(t):
+    pass # must raise an exception for min > max
+
+@raises(Exception)
+@forall(tries=10, t=lists(size=(20, 10)))
+def test_wrong_lists_size(t):
+    pass # must raise an exception for min > max
+
 
 # 
 @forall(tries=10, ul=lists(items=unicodes()))

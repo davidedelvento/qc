@@ -38,6 +38,7 @@ def lists(items=integers(), size=(0, 100)):
        and size[1]. Yields a list of the low size and the high size
        first to test boundary conditions.
     '''
+    assert size[0] >=0, "list size must be non-negative" 
     yield [items.next() for _ in xrange(size[0])]
     yield [items.next() for _ in xrange(size[1])]
     while True:
@@ -48,6 +49,7 @@ def tuples(items=integers(), size=(0, 100)):
        and size[1]. Yields a tuple of the low size and the high size
        first to test boundary conditions.
     '''
+    assert size[0] >=0, "tuple size must be non-negative" 
     yield tuple([items.next() for _ in xrange(size[0])])
     yield tuple([items.next() for _ in xrange(size[1])])
     while True:
