@@ -116,6 +116,9 @@ def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs)
                 for s in custom_shrink(random_kwargs[k]):
                     shrinked_kwargs = random_kwargs.copy()
                     shrinked_kwargs[k] = s
+                    if forall.verbose or os.environ.has_key('QC_VERBOSE'):
+                        from pprint import pprint
+                        pprint(random_kwargs)
                     call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **shrinked_kwargs)
         if sys.version_info[0] < 3:
             raise QCAssertionError(e, str(random_kwargs) + 
@@ -139,7 +142,7 @@ def forall(tries=100, shrink=True, seed=None, custom_shrink=qc_shrink, **kwargs)
                                  for (name, gen) in kwargs.iteritems()))
                 if forall.verbose or os.environ.has_key('QC_VERBOSE'):
                     from pprint import pprint
-                    pprint(random_kwargs)
+                    pprint("Shrink history:")
                 random_kwargs.update(**inkwargs)
                 call_and_shrink(f, shrink, seed, custom_shrink, *inargs, **random_kwargs)
             if forall.printsummary:
