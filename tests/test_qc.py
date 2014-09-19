@@ -1,6 +1,8 @@
 from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, qc_shrink, call_and_shrink
 import math
 
+# Integers
+
 @forall(tries=10, i=integers())
 def test_integers(i):
     assert type(i) == int, "expected an int, instead got a " + str(type(i))
@@ -15,13 +17,7 @@ def test__nonpositive_integers(i):
     assert type(i) == int, "expected an int, instead got a " + str(type(i))
     assert -100 <= i <= 0, "not the expected range"
 
-@forall(tries=10, l=lists(items=integers()))
-def test_a_int_list(l):
-    assert type(l) == list
-
-@forall(tries=10, l=tuples(items=integers()))
-def test_a_int_tuple(l):
-    assert type(l) == tuple
+# Floats
 
 @forall(tries=10, i=floats())
 def test_floats(i):
@@ -42,25 +38,46 @@ def test_nonspecial_floats(i):
     assert type(i) == float, "expected a float, instead got a " + str(type(i))
     assert -100 <= i <= 100, "not the expected range"
 
+# Lists and tuples 
+
+@forall(tries=10, l=lists(items=integers()))
+def test_a_int_list(l):
+    assert type(l) == list, "expected a list, instead got a " + str(type(l))
+    for i in l:
+        assert type(i) == int, "expected an int, instead got a " + str(type(i))
+
+@forall(tries=10, t=tuples(items=integers()))
+def test_a_int_tuple(t):
+    assert type(t) == tuple, "expected a tuple, instead got a " + str(type(t))
+    for i in t:
+        assert type(i) == int, "expected an int, instead got a " + str(type(i))
 
 @forall(tries=10, l=lists(items=floats()))
 def test_a_float_list(l):
-    assert type(l) == list
-    assert reduce(lambda x,y: x and type(y) == float, l, True)
+    assert type(l) == list, "expected a list, instead got a " + str(type(l))
+    for i in l:
+        assert type(i) == float, "expected a float, instead got a " + str(type(i))
 
+@forall(tries=10, t=tuples(items=floats()))
+def test_a_float_tuple(t):
+    assert type(t) == tuple, "expected a tuple, instead got a " + str(type(t))
+    for i in t:
+        assert type(i) == float, "expected a float, instead got a " + str(type(i))
+
+@forall(tries=10, l=lists(items=integers(), size=(10, 50)))
+def test_lists_size(l):
+    assert 10 <= len(l) <= 50, "list of unexpected size: " + str(len(l))
+
+@forall(tries=10, t=tuples(items=integers(), size=(10, 50)))
+def test_tuples_size(t):
+    assert 10 <= len(t) <= 50, "tuple of unexpected size: " + str(len(t))
+
+# 
 @forall(tries=10, ul=lists(items=unicodes()))
 def test_unicodes_list(ul):
     assert type(ul) == list
     if len(ul):
         assert type(ul[0]) == unicode
-
-@forall(tries=10, l=lists(items=integers(), size=(10, 50)))
-def test_lists_size(l):
-    assert len(l) <= 50 and len(l) >= 10
-
-@forall(tries=10, l=tuples(items=integers(), size=(10, 50)))
-def test_tuples_size(l):
-    assert len(l) <= 50 and len(l) >= 10
 
 @forall(tries=10, u=unicodes())
 def test_unicodes(u):
