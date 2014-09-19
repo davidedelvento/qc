@@ -5,12 +5,15 @@ import random
 import os, sys
 import functools
 
-def integers(low=0, high=100):
+def integers(low=-sys.maxint-1, high=sys.maxint):
     '''Endlessly yields random integers between (inclusively) low and high.
        Yields low then high first to test boundary conditions.
     '''
     yield low
     yield high
+    for i in (-1,0,1):
+        if low < i < high:
+            yield i
     while True:
         yield random.randint(low, high)
 

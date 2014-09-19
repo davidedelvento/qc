@@ -2,8 +2,17 @@ from qc import integers, floats, unicodes, characters, lists, tuples, dicts, obj
 
 @forall(tries=10, i=integers())
 def test_integers(i):
-    assert type(i) == int
-    assert i >= 0 and i <= 100
+    assert type(i) == int, "expected an int, instead got a " + str(type(i))
+
+@forall(tries=10, i=integers(low=0, high=100))
+def test__nonnegative_integers(i):
+    assert type(i) == int, "expected an int, instead got a " + str(type(i))
+    assert 0 <= i <= 100, "not the expected range"
+
+@forall(tries=10, i=integers(low=-100, high=0))
+def test__nonpositive_integers(i):
+    assert type(i) == int, "expected an int, instead got a " + str(type(i))
+    assert -100 <= i <= 0, "not the expected range"
 
 @forall(tries=10, l=lists(items=integers()))
 def test_a_int_list(l):
