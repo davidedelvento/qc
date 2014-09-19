@@ -1,4 +1,5 @@
 from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, qc_shrink, call_and_shrink
+import math
 
 @forall(tries=10, i=integers())
 def test_integers(i):
@@ -24,8 +25,23 @@ def test_a_int_tuple(l):
 
 @forall(tries=10, i=floats())
 def test_floats(i):
-    assert type(i) == float
-    assert i >= 0.0 and i <= 100.0
+    assert type(i) == float, "expected a float, instead got a " + str(type(i))
+
+@forall(tries=10, i=floats(low=0, high=100))
+def test_nonnegative_floats(i):
+    assert type(i) == float, "expected a float, instead got a " + str(type(i))
+    assert 0 <= i <= 100 or math.isnan(i) or math.isinf(i), "not the expected range"
+
+@forall(tries=10, i=floats(low=-100, high=0))
+def test_nonpositive_floats(i):
+    assert type(i) == float, "expected a float, instead got a " + str(type(i))
+    assert -100 <= i <= 0 or math.isnan(i) or math.isinf(i), "not the expected range"
+
+@forall(tries=10, i=floats(low=-100, high=-100, special=False))
+def test_nonspecial_floats(i):
+    assert type(i) == float, "expected a float, instead got a " + str(type(i))
+    assert -100 <= i <= 100, "not the expected range"
+
 
 @forall(tries=10, l=lists(items=floats()))
 def test_a_float_list(l):

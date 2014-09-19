@@ -17,12 +17,19 @@ def integers(low=-sys.maxint-1, high=sys.maxint):
     while True:
         yield random.randint(low, high)
 
-def floats(low=0.0, high=100.0):
+def floats(low=-sys.float_info.max, high=sys.float_info.max, special=True):
     '''Endlessly yields random floats between (inclusively) low and high.
        Yields low then high first to test boundary conditions.
     '''
-    yield low
-    yield high
+    yield float(low)
+    yield float(high)
+    for i in (-1.0, -sys.float_info.min, 0.0, sys.float_info.min, 1.0):
+        if low < i < high:
+            yield i
+    if special:
+        yield float('nan')
+        yield float('inf')
+        yield float('-inf')
     while True:
         yield random.uniform(low, high)
 
