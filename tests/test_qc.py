@@ -93,8 +93,12 @@ def test_wrong_tuples_size(t):
 def test_wrong_lists_size(t):
     pass # must raise an exception for min > max
 
+# Unicode and characters
 
-# 
+@forall(tries=10, c=characters())
+def test_characters(c):
+    assert len(c) == 1
+
 @forall(tries=10, ul=lists(items=unicodes()))
 def test_unicodes_list(ul):
     assert type(ul) == list
@@ -120,17 +124,17 @@ def test_a_tupled_list(l):
     for x in l:
         assert type(x[0]) == int and type(x[1]) == unicode
 
+# Other tests
+
 @forall(tries=10, x=integers(), y=integers())
-def test_addition_commutative(x, y):
+def test_integer_addition_commutative(x, y):
     assert x + y == y + x
 
 @forall(tries=10, l=lists())
 def test_reverse_reverse(l):
     assert list(reversed(list(reversed(l)))) == l
 
-@forall(tries=10, c=characters())
-def test_characters(c):
-    assert len(c) == 1
+# Dictionaries
 
 def kv_unicode_integers():
     u = unicodes()
@@ -156,6 +160,8 @@ def test_dicts_size(d):
     for x, y in d.iteritems():
         assert type(x) == unicode
         assert type(y) == list
+
+# Shrinking
 
 def test_shrink_empty_list():
     empty_list_has_been_shrunk = False
