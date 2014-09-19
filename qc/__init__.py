@@ -1,7 +1,7 @@
 # Copyright (c) 2009-2011, Dan Bravender <dan.bravender@gmail.com>
 # Copyright (c) 2012-2014, Davide Del Vento <davide.del.vento @ gmail>
 
-import random
+import random, math
 import os, sys
 import functools
 
@@ -104,7 +104,7 @@ def qc_shrink(something):
     except TypeError:
         pass
     try:
-        if abs(something) >= 2:
+        if abs(something) >= 2 and not math.isinf(something):
             yield something/2
     except TypeError:
         pass
