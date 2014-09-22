@@ -1,5 +1,5 @@
 from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, qc_shrink, call_and_shrink
-import math
+import math, sys
 from nose.tools import raises
 
 # Integers
@@ -38,6 +38,70 @@ def test_nonpositive_floats(i):
 def test_nonspecial_floats(i):
     assert type(i) == float, "expected a float, instead got a " + str(type(i))
     assert -100 <= i <= 100, "not the expected range"
+
+def test_floats_coverage():
+    negative_inf = False
+    negative_max = False
+    negative_large = False
+    negative_one = False
+    negative_small = False
+    negative_min = False
+    zero = False
+    positive_min = False
+    positive_small = False
+    positive_one = False
+    positive_large = False
+    positive_max = False
+    positive_inf = False
+    nan = False
+
+    gen = floats()
+    for i in range(100):              # 100 opportunities should be plenty
+        f = gen.next()
+        print "value = ", f
+        if math.isinf(f) and f < 0:
+            negative_inf = True
+        elif f == -sys.float_info.max:
+            negative_max = True
+        elif -sys.float_info.max / 2 < f < -2:
+            negative_large = True
+        elif f == -1.0:
+            negative_one = True
+        elif -0.5 < f < -sys.float_info.min * 2:
+            negative_small = True
+        elif f == -sys.float_info.min:
+            negative_min = True
+        elif f == 0:
+            zero = True
+        elif f == sys.float_info.min:
+            positive_min = True
+        elif sys.float_info.min * 2 < f < 0.5:
+            positive_small = True
+        elif f == 1.0:
+            positive_one = True
+        elif 2 < f < sys.float_info.max / 2:
+            positive_large = True
+        elif f == sys.float_info.max:
+            positive_max = True
+        elif math.isinf(f) and f > 0:
+            positive_inf = True
+        elif math.isnan(f):
+            nan = True
+
+    assert negative_inf == True
+    assert negative_max == True
+    assert negative_large == True
+    assert negative_one == True
+    assert negative_small == True
+    assert negative_min == True
+    assert zero == True
+    assert positive_min == True
+    assert positive_small == True
+    assert positive_one == True
+    assert positive_large == True
+    assert positive_max == True
+    assert positive_inf == True
+    assert nan == True
 
 # Lists and tuples 
 

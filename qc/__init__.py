@@ -30,8 +30,13 @@ def floats(low=-sys.float_info.max, high=sys.float_info.max, special=True):
         yield float('nan')
         yield float('inf')
         yield float('-inf')
-    while True:
-        yield random.uniform(low, high)
+
+    if low == -sys.float_info.max and high == sys.float_info.max:
+        while True:   # uniform does not work for such a large range
+            yield random.uniform(-2, 2) * 10 ** random.randint(-sys.float_info.max_10_exp+1, sys.float_info.max_10_exp-1)
+    else:
+        while True:   # TODO it should probably detect a large range and use an approach similar to the previous one
+            yield random.uniform(low, high)
 
 def lists(items=integers(), size=(0, 100)):
     '''Endlessly yields random lists varying in size between size[0]
