@@ -136,7 +136,7 @@ def test_reverse_reverse(l):
 
 # Dictionaries
 
-def kv_unicode_integers():
+def kv_unicode_integers(): # key-value helper
     u = unicodes()
     i = integers()
     while True:
@@ -148,7 +148,7 @@ def test_dicts(d):
         assert type(x) == unicode
         assert type(y) == int
 
-def kv_unicodes_lists():
+def kv_unicodes_lists(): # key-value helper
     u = unicodes()
     l = lists()
     while True:
