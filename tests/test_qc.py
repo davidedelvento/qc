@@ -255,7 +255,8 @@ def test_shrink_integers(full_i):
 def test_shrink_floats(full_f):
     for f in qc_shrink(full_f):
         assert isinstance(f, float), "floats must be shrunk to floats"
-        assert abs(f) <= abs(full_f)/2 + 1 # TODO, check if this is really a must
+        assert abs(full_f) > 1 # TODO, check if something is appropriate for smaller number
+        assert abs(f) <= abs(full_f)/2 + 1, "shrunk fload must be smaller than parent"
         assert cmp(f,0) == cmp(full_f, 0), "shrink must not change sign of floats"
 
 @forall(tries=10, i=integers(low=0, high=10))
