@@ -157,9 +157,6 @@ def forall(tries=100, shrink=True, seed=None, custom_shrink=qc_shrink, **kwargs)
             for _ in xrange(tries):
                 random_kwargs = (dict((name, gen.next())
                                  for (name, gen) in kwargs.iteritems()))
-                if forall.verbose or os.environ.has_key('QC_VERBOSE'):
-                    from pprint import pprint
-                    pprint("Shrink history:")
                 random_kwargs.update(**inkwargs)
                 call_and_shrink(f, shrink, seed, custom_shrink, *inargs, **random_kwargs)
             if forall.printsummary:
