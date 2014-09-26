@@ -271,6 +271,26 @@ class TestClass(object):
     def __init__(self, arg):
         self.arg_from_init = arg
 
+# forall wrapper
+
+def constant(value):
+    while True:
+        yield value
+
+def test_forall():
+    @forall(tries=11, a=constant(7.5))
+    def myf(arr, a):
+        arr.append(a)
+    arr = []
+    myf(arr)
+    assert arr == [7.5]*11, "arr is" + str(arr) + "instead of the expected" + str([7.5]*11)
+    @forall(tries=11, a=constant(7.5))
+    def myf(a, myarr=None):
+        myarr.append(a)
+    arr = []
+    myf(myarr=arr)
+    assert arr == [7.5]*11, "arr is" + str(arr) + "instead of the expected" + str([7.5]*11)
+
 @forall(tries=10, obj=objects(TestClass, {'an_int': integers(), 'a_float': floats()}, unicodes()))
 def test_objects(obj):
     assert type(obj) == TestClass
