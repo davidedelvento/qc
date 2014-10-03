@@ -2,8 +2,8 @@
 # Copyright (c) 2012-2014, Davide Del Vento <davide.del.vento @ gmail>
 
 import random, math
-import os, sys
-import functools
+import os, sys, warnings
+import itertools, functools
 
 def integers(low=-sys.maxint-1, high=sys.maxint):
     '''Endlessly yields random integers between (inclusively) low and high.
@@ -143,6 +143,20 @@ def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs)
         else:
             raise QCAssertionError(e, "{0}, from seed {1}, caused a FAILURE\n".format(
                                    random_kwargs, seed)).with_traceback(e.__traceback__)
+
+def allchoices(**kwargs):
+    warnings.warn("Testing all choices may take very long time, because there may be too many",  RuntimeWarning)
+    def wrap(f):
+        @functools.wraps(f)
+        def wrapped(*inargs, **inkwargs):
+            for values in itertools.product(*tuple(kwargs.values())):
+                new_kwargs={}
+                for i,k in enumerate(kwargs.keys()):
+                    new_kwargs[k]=values[i]
+                new_kwargs.update(**inkwargs)
+                f(*inargs, **new_kwargs)
+        return wrapped
+    return wrap
 
 def forall(tries=100, shrink=True, seed=None, custom_shrink=qc_shrink, **kwargs):
     if seed is None:

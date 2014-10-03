@@ -1,4 +1,4 @@
-from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, qc_shrink, call_and_shrink
+from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, allchoices, qc_shrink, call_and_shrink
 import math, sys
 from nose.tools import raises
 
@@ -297,4 +297,34 @@ def test_objects(obj):
     assert type(obj.an_int) == int
     assert type(obj.a_float) == float
     assert type(obj.arg_from_init) == unicode
+
+# All choices
+
+def test_allchoices():
+    arr = []
+    @allchoices(a=(-1, 0, 1), b=('x', 'y', 'z'), c=(True, False))
+    def myf(arr, a,b,c):
+        arr.append((a,b,c))
+    myf(arr)
+    # explicit is better than implicit, avoid logic in test, please bear the following
+    arr.remove((-1, 'x', True))
+    arr.remove((-1, 'y', True))
+    arr.remove((-1, 'z', True))
+    arr.remove((0, 'x', True))
+    arr.remove((0, 'y', True))
+    arr.remove((0, 'z', True))
+    arr.remove((1, 'x', True))
+    arr.remove((1, 'y', True))
+    arr.remove((1, 'z', True))
+    #
+    arr.remove((-1, 'x', False))
+    arr.remove((-1, 'y', False))
+    arr.remove((-1, 'z', False ))
+    arr.remove((0, 'x', False))
+    arr.remove((0, 'y', False))
+    arr.remove((0, 'z', False))
+    arr.remove((1, 'x', False))
+    arr.remove((1, 'y', False))
+    arr.remove((1, 'z', False))
+    assert len(arr) == 0, "arr is" +str( arr)
 
