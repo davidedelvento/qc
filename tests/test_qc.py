@@ -1,4 +1,4 @@
-from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, allchoices, qc_shrink, call_and_shrink
+from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, allchoices, allpairs, qc_shrink, call_and_shrink
 import math, sys, warnings
 from nose.tools import raises
 
@@ -330,3 +330,29 @@ def test_allchoices():
     arr.remove((1, 'z', False))
     assert len(arr) == 0, "arr is" +str( arr)
 
+# All pairs
+
+def pairs_search(pairs, a, b, expected_values):
+    for av,bv in expected_values:
+        found = False
+        for case in pairs:
+            if case[a] == av and case[b] == bv:
+                found = True
+        assert found, "Pair (" + a + "=" + str(av) + ", " + b + "=" + str(bv) + ") not found in" + str(pairs)
+
+def test_all_binary_pairs():
+    pairs=[]
+    @allpairs(a=(-1,1), b=(True, False), c=('A', 'B'), d=(0.0, 1.0))
+    def mypairs(arr, a, b, c, d):
+        arr.append({'a':a, 'b':b, 'c':c, 'd':d})
+    mypairs(pairs)
+
+    # explicit is better than implicit, wanted to make this test more explicit, but here it is at least for now...
+    pairs_search(pairs, 'a', 'b', ((-1, True), (-1, False), (1, True), (1, False)))
+    pairs_search(pairs, 'a', 'c', ((-1, "A"), (-1, "B"), (1, "A"), (1, "B")))
+    pairs_search(pairs, 'a', 'd', ((-1, 0.0), (-1, 1.0), (1, 0.0), (1, 1.0)))
+
+    pairs_search(pairs, 'b', 'c', ((True, 'A'), (True, 'B'), (False, 'A') (False, 'B')))
+    pairs_search(pairs, 'b', 'd', ((True, 0.0), (True, 1.0), (False, 0.0) (False, 1.0)))
+
+    pairs_search(pairs, 'c', 'd', (('A', 0.0), ('A', 1.0), ('B', 0.0), ('B', 1.0)))

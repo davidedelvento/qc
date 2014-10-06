@@ -144,6 +144,18 @@ def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs)
             raise QCAssertionError(e, "{0}, from seed {1}, caused a FAILURE\n".format(
                                    random_kwargs, seed)).with_traceback(e.__traceback__)
 
+def allpairs(**kwargs):
+    def wrap(f):
+        @functools.wraps(f)
+        def wrapped(*inargs, **inkwargs):
+            new_kwargs = {}
+            for qqq in (0, -1):
+                for key, values in zip(kwargs.keys(), kwargs.values()):
+                    new_kwargs[key] = values[qqq]
+                f(*inargs, **new_kwargs)
+        return wrapped
+    return wrap
+
 def allchoices(**kwargs):
     warnings.warn("Testing all choices may take very long time, because there may be too many",  RuntimeWarning)
     def wrap(f):
