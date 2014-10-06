@@ -1,5 +1,5 @@
 from qc import integers, floats, unicodes, characters, lists, tuples, dicts, objects, forall, allchoices, qc_shrink, call_and_shrink
-import math, sys
+import math, sys, warnings
 from nose.tools import raises
 
 # Integers
@@ -302,9 +302,11 @@ def test_objects(obj):
 
 def test_allchoices():
     arr = []
-    @allchoices(a=(-1, 0, 1), b=('x', 'y', 'z'), c=(True, False))
-    def myf(arr, a,b,c):
-        arr.append((a,b,c))
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")                                   # There are only 3 * 3 * 2 = 18 choices
+        @allchoices(a=(-1, 0, 1), b=('x', 'y', 'z'), c=(True, False))
+        def myf(arr, a,b,c):
+            arr.append((a,b,c))
     myf(arr)
     # explicit is better than implicit, avoid logic in test, please bear the following
     arr.remove((-1, 'x', True))
