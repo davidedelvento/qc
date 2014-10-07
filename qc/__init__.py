@@ -144,14 +144,31 @@ def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs)
             raise QCAssertionError(e, "{0}, from seed {1}, caused a FAILURE\n".format(
                                    random_kwargs, seed)).with_traceback(e.__traceback__)
 
+# TODO: I don't like the following implementation, but I'm putting it out there for now
+
+magic={}
+magic[1]=['0','1']
+magic[3]=['000','011','100','110']
+magic[10]=['0000000000','0000111111','0111000111','1011011001','1101101010','1110110100']
+
 def allpairs(**kwargs):
+    mkeys=magic.keys()
+
     def wrap(f):
         @functools.wraps(f)
         def wrapped(*inargs, **inkwargs):
-            new_kwargs = {}
-            for qqq in (0, -1):
-                for key, values in zip(kwargs.keys(), kwargs.values()):
-                    new_kwargs[key] = values[qqq]
+            for values in kwargs.values():
+                if len(values) != 2:
+                    raise NotImplementedError("At the moment only binary arguments are supported")
+            for k in mkeys:
+                if k < len(kwargs.keys()):
+                    mkeys.remove(k)
+            if len(mkeys) == 0:
+                raise NotImplementedError("At the moment only up to 10 arguments are supported")
+            for curr_test in magic[min(mkeys)]:
+                new_kwargs = {}
+                for i, (key, values) in enumerate(zip(kwargs.keys(), kwargs.values())):
+                    new_kwargs[key] = values[int(curr_test[i])]
                 f(*inargs, **new_kwargs)
         return wrapped
     return wrap

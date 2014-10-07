@@ -352,7 +352,17 @@ def test_all_binary_pairs():
     pairs_search(pairs, 'a', 'c', ((-1, "A"), (-1, "B"), (1, "A"), (1, "B")))
     pairs_search(pairs, 'a', 'd', ((-1, 0.0), (-1, 1.0), (1, 0.0), (1, 1.0)))
 
-    pairs_search(pairs, 'b', 'c', ((True, 'A'), (True, 'B'), (False, 'A') (False, 'B')))
-    pairs_search(pairs, 'b', 'd', ((True, 0.0), (True, 1.0), (False, 0.0) (False, 1.0)))
+    pairs_search(pairs, 'b', 'c', ((True, 'A'), (True, 'B'), (False, 'A'), (False, 'B')))
+    pairs_search(pairs, 'b', 'd', ((True, 0.0), (True, 1.0), (False, 0.0), (False, 1.0)))
 
     pairs_search(pairs, 'c', 'd', (('A', 0.0), ('A', 1.0), ('B', 0.0), ('B', 1.0)))
+
+def test_allpairs():
+    pairs = []
+    @allpairs(x=('x', 'y', 'z'), p=(0,1), q=(True, False))
+    def mypairs(arr, x, p, q):
+        arr.append({'x':x, 'p':p, 'q':q})
+    mypairs(pairs)
+
+    pairs_search(pairs, 'x', 'q', (('x', True), ('y', True), ('z', True), ('x', False), ('y', False), ('z', False)))
+    # and other pairs
