@@ -347,7 +347,11 @@ def test_all_binary_pairs():
         arr.append({'a':a, 'b':b, 'c':c, 'd':d})
     mypairs(pairs)
 
-    # explicit is better than implicit, wanted to make this test more explicit, but here it is at least for now...
+    # The following it should be implicitly covered by the pairs_search below, but explicit is better than implicit...
+    assert len(pairs) > 4, "Cannot provide all pairs of four binary variables with four or less tests (" + str(len(pairs)) + " given)"
+
+    # explicit is better than implicit, wanted to make this test more explicit, but here it is at least for now and
+    # it does test correctness
     pairs_search(pairs, 'a', 'b', ((-1, True), (-1, False), (1, True), (1, False)))
     pairs_search(pairs, 'a', 'c', ((-1, "A"), (-1, "B"), (1, "A"), (1, "B")))
     pairs_search(pairs, 'a', 'd', ((-1, 0.0), (-1, 1.0), (1, 0.0), (1, 1.0)))
@@ -356,6 +360,9 @@ def test_all_binary_pairs():
     pairs_search(pairs, 'b', 'd', ((True, 0.0), (True, 1.0), (False, 0.0), (False, 1.0)))
 
     pairs_search(pairs, 'c', 'd', (('A', 0.0), ('A', 1.0), ('B', 0.0), ('B', 1.0)))
+
+    # The following tests that the implementation is efficient
+    assert len(pairs) <= 6, "Six tests suffice to provide all pairs of four binary variables (" + str(len(pairs)) + " given)"
 
 def test_allpairs():
     from nose.plugins.skip import SkipTest

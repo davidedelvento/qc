@@ -144,28 +144,45 @@ def call_and_shrink(f, tryshrink, seed, custom_shrink, *inargs, **random_kwargs)
             raise QCAssertionError(e, "{0}, from seed {1}, caused a FAILURE\n".format(
                                    random_kwargs, seed)).with_traceback(e.__traceback__)
 
-# TODO: I don't like the following implementation, but I'm putting it out there for now
+def list_of_tests(num_of_vars):
+    if num_of_vars == 1:
+        return ['0','1']
+    elif num_of_vars <= 3:
+        return ['000','011','100','110']
+    else:
+        from math import factorial
+        coverage = -1                               # how many variables we can cover with not tests
+        num_of_tests = 4                            # how many tests we need
+        while coverage < num_of_vars:               # we want to cover all the ones we have
+            num_of_tests += 2
+            coverage = factorial(num_of_tests) / ( 2 * (factorial(num_of_tests/2) ** 2) )
 
-magic={}
-magic[1]=['0','1']
-magic[3]=['000','011','100','110']
-magic[10]=['0000000000','0000111111','0111000111','1011011001','1101101010','1110110100']
+        # at this point we know that with num_of_tests tests we can cover the num_of_vars we have
+
+        # To build the test cases, we use the following which is one way to build the minimum
+        # necessary and sufficient set to to cover coverage variable. 
+        # The proof is simple, but too large for this margin
+        list_of_cases = []
+        for t in range(2**(num_of_tests-1)):
+            case=bin(t)[2:].zfill(num_of_tests)
+            if case.count('0') == num_of_tests / 2: # == case.count('1'):
+                list_of_cases.append(case)
+
+        # For going from cases to tests, we take the transpose
+        lot = []                                    # list of tests
+        for i in range(num_of_tests):
+            lot.append(''.join([case[i] for case in list_of_cases]))
+
+        return lot
 
 def allpairs(**kwargs):
-    mkeys=magic.keys()
-
     def wrap(f):
         @functools.wraps(f)
         def wrapped(*inargs, **inkwargs):
             for values in kwargs.values():
                 if len(values) != 2:
                     raise NotImplementedError("At the moment only binary arguments are supported")
-            for k in mkeys:
-                if k < len(kwargs.keys()):
-                    mkeys.remove(k)
-            if len(mkeys) == 0:
-                raise NotImplementedError("At the moment only up to 10 arguments are supported")
-            for curr_test in magic[min(mkeys)]:
+            for curr_test in list_of_tests(len(kwargs.keys())):
                 new_kwargs = {}
                 for i, (key, values) in enumerate(zip(kwargs.keys(), kwargs.values())):
                     new_kwargs[key] = values[int(curr_test[i])]
