@@ -102,7 +102,7 @@ Known bugs
 ==========
 
 See https://github.com/davidedelvento/qc/issues for a list of known
-issues. The Python 3 support seems to be broken at the moment.
+issues. 
 
 One common problem when using automatic shrinking is running out
 of stack space in the recursion process (the shrink algorithm call
@@ -124,24 +124,3 @@ writing your first shrinker) or in qc.  Please report the
 latter to https://github.com/davidedelvento/qc/issues
 
 
-TODO
-====
-
-* Print a better summary, e.g. including the total number of tries per
-  method and other infos (need to investigate how to do it cleanly and
-  in a way that works both in unittest and nose).
-
-* Provide the option to not stop in case of failures, and instead
-  logging and continue (or better handled by the underlying test
-  framework?? See for a `this StackOverflow question`_ discussion).
-
-.. _this StackOverflow question: http://stackoverflow.com/questions/4732827/
-
-* Improve the current test case reduction from bisection only to
-  delta-debugging. See the following links for details:
-
-    * http://www.st.cs.uni-saarland.de/dd/
-    * http://delta.tigris.org/
-    * http://classes.soe.ucsc.edu/cmps290g/Winter04/lectures/flanagan-290g-8.pdf
-
-* Integration with ``git-bisect`` (maybe).
