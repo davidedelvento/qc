@@ -69,10 +69,7 @@ at the moment the content is a mere ``__init__.py`` file) into the location of y
 To make `qc` available to your programs you will have to set the
 ``PYTHONPATH`` environmental variable or have the ``qc`` directory as
 a subdirectory of the tree where you are running (for details, see 
-https://docs.python.org/2/tutorial/modules.html#the-module-search-path if you
-use python 2 or https://docs.python.org/3/tutorial/modules.html#the-module-search-path
-if you use python 3)
-
+https://docs.python.org/2/tutorial/modules.html#the-module-search-path 
 
 Examples
 ========
