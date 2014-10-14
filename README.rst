@@ -63,13 +63,17 @@ The easy, system-wide way (requires administrative privileges)::
     sudo pip install -e git://github.com/davidedelvento/qc.git#egg=qc
 
 If you don't feel ready to commit for a whole system install of this library, or
-simply don't have root access on your machine, just copy the ``qc`` directory 
+simply don't have root access on your machine (and don't want to use virtualenv_), 
+just copy the ``qc`` directory 
 and its content (as seen in https://github.com/davidedelvento/qc/tree/master/qc
 at the moment the content is a mere ``__init__.py`` file) into the location of your choice.  
 To make `qc` available to your programs you will have to set the
 ``PYTHONPATH`` environmental variable or have the ``qc`` directory as
 a subdirectory of the tree where you are running (for details, see 
-https://docs.python.org/2/tutorial/modules.html#the-module-search-path 
+https://docs.python.org/2/tutorial/modules.html#the-module-search-path )
+
+.. _virtualenv: http://virtualenv.readthedocs.org/en/latest/virtualenv.html
+
 
 Examples
 ========
