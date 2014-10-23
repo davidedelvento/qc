@@ -57,6 +57,7 @@ class TestBookcase(TestCase):
         bc.put(book)
         self.assertEqual(book, bc.take(book))
 
-main()
+if __name__ == '__main__':
+    main()
 
 

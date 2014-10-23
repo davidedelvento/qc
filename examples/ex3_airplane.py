@@ -56,5 +56,6 @@ class TestPlane(TestCase):
         self.cessna172.fly_to(l)
         self.assertTrue(self.cessna172.has_gas())
 
-main()
+if __name__ == '__main__':
+    main()
 

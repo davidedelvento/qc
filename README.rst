@@ -10,7 +10,9 @@ Introduction
 
 This framework does Random and Combinatorial Testing. It is a Python framework
 inspired by Haskell's QuickCheck_ and Scala's scalacheck_ (not a port to Python
-of those frameworks).
+of those frameworks). The framework is not standalone, but works in your own
+favorite testing infrastructure: PyUnit (a.k.a. unittest_) nose_ and py.test_ are
+all supported.
 
 In Combinatorial Testing, `qc` provides a deterministic implementation of all-choices
 (simply picks all the combinatorial choices of parameters) and all-pairs_
@@ -27,6 +29,9 @@ to find a small, failing test case, very quickly.
 .. _QuickCheck: http://hackage.haskell.org/package/QuickCheck
 .. _scalacheck: https://github.com/rickynils/scalacheck
 .. _all-pairs: https://en.wikipedia.org/wiki/All-pairs_testing
+.. _unittest: https://docs.python.org/2/library/unittest.html
+.. _nose: https://nose.readthedocs.org/en/latest/
+.. _py.test: http://pytest.org/latest/
 
 More on Random Testing
 ======================
@@ -78,25 +83,32 @@ https://docs.python.org/2/tutorial/modules.html#the-module-search-path )
 Examples
 ========
 
+These examples are more to be read than to be run, but of course you want to
+run them to see the framework in action (and of course all the failures are
+there on purpose...)
+
 ``examples/ex1_unittest.py`` and ``examples/ex1_nose.py``
-    These examples provide a simple example (borrowed from scalacheck)
+    These files provide a simple example (borrowed from scalacheck)
     on how to use this framework with Python native PyUnit framework
     (aka unittest module) and with the popular nose framework.  Just
     run ``python examples/example1_unittest.py`` or ``nosetests
-    examples/example1_nose.py``. Pytest can also run the nose tests
-    using ``py.test examples/example1_nose.py``.
+    examples/example1_nose.py``. Py.test can run both the nose test or the unittest
+    using ``py.test examples/example1_nose.py`` or ``py.test examples/ex1_nose.py``
 
 ``examples/ex2_choices_pairs.py`` TBD
 
 ``examples/ex3_airplane.py``
     Simple example on how to have qc generate your own custom (random)
-    objects and how to use them in practice.
+    objects and how to use them in practice. Run it with either
+    ``nosetests examples/ex3_airplane.py`` or ``py.test examples/ex3_airplane.py``
 
 ``examples/ex4_bookcase.py``
     A more elaborate example, showing the power of automatic shrinking
     and showing how to write your own shrinker. In this example you can
     see how qc automagically finds the root cause of the bug, compare
-    the output with or without shrinking!
+    the output with or without shrinking! Run it with either
+    ``nosetests examples/ex4_bookcase.py`` or ``py.test examples/ex4_bookcase.py``
+
 
 
 Known bugs

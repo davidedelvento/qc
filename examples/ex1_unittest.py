@@ -26,5 +26,6 @@ class TestString(TestCase):
         stop = len(a) + len(b)
         self.assertEqual(concat[start: stop], b)
 
-main() 
+if __name__ == "__main__":
+    main() 
 
