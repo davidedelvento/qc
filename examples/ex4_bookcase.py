@@ -26,7 +26,7 @@ from qc import forall, integers, lists, qc_shrink
 
 # This is the qc-related auxiliary method
 # used to create random objects (bookcases)
-def bookcases(nshelves = integers(1,10), book_set=lists()):
+def bookcases(nshelves = integers(1,10), book_set=lists(items=integers(1,20))):
     while True:
         yield Bookcase(nshelves.next(), book_set.next())
 
